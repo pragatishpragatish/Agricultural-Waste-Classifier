@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Result</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #e0e7ff; /* Light pastel blue */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 40px;
+            margin: 0;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 600px;
+            border: 4px solid #5e60ce; /* Dark pastel purple */
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 12px;
+            border: 3px solid #5e60ce;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .recycling-info {
+            background: #f0f4c3; /* Light pastel green */
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        .chat-container {
+            margin-top: 25px;
+            padding: 15px;
+            background: #ffeaa7; /* Soft pastel yellow */
+            border-radius: 12px;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .chat-container h3 {
+            text-align: center;
+            font-size: 18px;
+            color: #2d3436;
+        }
+        .chat-box {
+            width: auto;
+            min-height: 150px;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #5e60ce;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        /* Modern Scrollbar */
+        .chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-box::-webkit-scrollbar-track {
+            background: #e0e7ff;
+            border-radius: 10px;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: #5e60ce;
+            border-radius: 10px;
+        }
+        .chat-input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding: 0 0px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #5e60ce;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .send-btn {
+            padding: 10px 15px;
+            border-radius: 10px;
+            background-color: #4a47a3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+        .send-btn:hover {
+            background-color: #2d2b8e;
+        }
+        .no-bullets {
+            list-style-type: none; /* Removes the bullets */
+            padding-left: 0; /* Removes the default indentation */
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background-color: #4a47a3;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s ease-in-out;
+        }
+        a:hover {
+            background-color: #2d2b8e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Uploaded Image:</h2>
+        <div class="image-container">
+            <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
+        </div>
+
+        <h2>Detected Waste Classes:</h2>
+        <ul class="no-bullets">
+            {% for cls in classes %}
+                <li>{{ cls }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Recycling & Reuse Suggestions:</h2>
+        <div class="recycling-info">
+            {% for line in recycling_info.split("\n") %}
+                <p>{{ line }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="chat-container">
+            <h3>Ask More About Recycling:</h3>
+            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type your question here...">
+                <button class="send-btn" onclick="sendMessage()">Ask</button>
+            </div>
+        </div>
+
+        <a href="/">🔄 Try Another Image</a>
+    </div>
+
+    <script>
+        const recyclingInfo = `{{ recycling_info | tojson }}`
+            .replace(/\\n/g, "\n")
+            .replace(/\\u201c|\\u201d/g, '"')
+            .replace(/\\u2018|\\u2019/g, "'");
+
+        function sendMessage() {
+            var input = document.getElementById("chat-input").value.trim();
+            if (!input) return;
+            var chatBox = document.getElementById("chat-box");
+
+            chatBox.innerHTML += "<p><strong>You:</strong> " + input + "</p>";
+            document.getElementById("chat-input").value = "";
+
+            fetch("/ask", {
+                method: "POST",
+                body: JSON.stringify({ question: input, context: recyclingInfo }),
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                typeWriterEffect("AI: " + data.answer, chatBox);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function typeWriterEffect(text, chatBox) {
+            let index = 0;
+            let responseElement = document.createElement("p");
+            chatBox.appendChild(responseElement);
+
+            function type() {
+                if (index < text.length) {
+                    responseElement.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(type, 20);
+                } else {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
