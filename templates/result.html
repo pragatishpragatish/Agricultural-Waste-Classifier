@@ -3,210 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classification Results - EcoSmart Waste Classifier</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Waste Classification Results</title>
     <style>
-        :root {
-            --primary: #4CAF50;
-            --secondary: #2196F3;
-            --accent: #FFC107;
-            --background: #f5f5f5;
-            --text: #333;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
-
+        
         body {
-            font-family: "Poppins", sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-color: #121212;
+            color: #ffffff;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto auto;
+            gap: 30px;
+            padding: 40px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        section {
+            background-color: #1e1e1e;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 2rem;
         }
-
-        .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            color: var(--text);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .image-container {
-            position: relative;
-            margin-bottom: 2rem;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .image-container:hover img {
-            transform: scale(1.02);
-        }
-
-        .results-section {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .results-section h2 {
-            color: var(--text);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 12px;
+            color: #ffffff;
         }
-
-        .results-section h2 i {
-            color: var(--primary);
+        
+        h2 svg {
+            width: 28px;
+            height: 28px;
+            fill: #4ade80;
         }
-
-        .detected-classes {
+        
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            background-color: #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .waste-classes {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 12px;
+            margin-top: 10px;
         }
-
-        .class-tag {
-            background: var(--primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            animation: fadeIn 0.5s ease;
+        
+        .waste-class {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
         }
-
+        
         .recycling-info {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            grid-column: span 2;
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 300px;
+            box-sizing: border-box;
         }
-
+        
         .recycling-info p {
-            margin-bottom: 1rem;
+            margin-bottom: 12px;
             line-height: 1.6;
-            color: #666;
+            color: #e0e0e0;
         }
-
-        .recycling-info p:last-child {
-            margin-bottom: 0;
+        
+        .chat-container {
+            grid-column: span 2;
         }
-
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 500;
+        
+        .chat-box {
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .chat-box p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .chat-box ol {
+            margin: 10px 0 10px 20px;
+        }
+        
+        .chat-box li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chat-input {
+            flex-grow: 1;
+            background-color: #2a2a2a;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .chat-input:focus {
+            outline: 2px solid #4ade80;
+        }
+        
+        .send-btn {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            color: #121212;
+            border: none;
+            border-radius: 8px;
+            padding: 0 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .back-button:hover {
-            background: #388E3C;
+        
+        .send-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 222, 128, 0.2);
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        .send-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #121212;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        
+        .footer {
+            grid-column: span 2;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
-
-        @media (max-width: 768px) {
+        
+        .back-btn {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            color: #121212;
+            text-decoration: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(74, 222, 128, 0.2);
+        }
+        
+        .back-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #121212;
+        }
+        
+        @media (max-width: 1200px) {
             .container {
-                padding: 1rem;
+                grid-template-columns: 1fr;
             }
-            .header h1 {
-                font-size: 1.5rem;
+            
+            .chat-container {
+                grid-column: span 1;
+            }
+            
+            .footer {
+                grid-column: span 1;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Classification Results</h1>
-        </div>
+        <section>
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z" />
+                </svg>
+                Uploaded Image
+            </h2>
+            <div class="image-container">
+                <img src="{{ uploaded_image_url }}" alt="Uploaded Waste Image">
+            </div>
+        </section>
 
-        <div class="image-container">
-            <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
-        </div>
-
-        <div class="results-section">
-            <h2><i class="fas fa-tags"></i> Detected Waste Types</h2>
-            <div class="detected-classes">
+        <section>
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M9,2A7,7 0 0,1 16,9C16,10.57 15.5,12 14.61,13.19L15.41,14H16L22,20L20,22L14,16V15.41L13.19,14.61C12,15.5 10.57,16 9,16A7,7 0 0,1 2,9A7,7 0 0,1 9,2M9,4C6.79,4 5,5.79 5,8C5,10.21 6.79,12 9,12C11.21,12 13,10.21 13,8C13,5.79 11.21,4 9,4Z" />
+                </svg>
+                Detected Waste Classes
+            </h2>
+            <div class="waste-classes">
                 {% for cls in classes %}
-                    <span class="class-tag">{{ cls }}</span>
+                    <div class="waste-class">{{ cls }}</div>
                 {% endfor %}
             </div>
-        </div>
+        </section>
 
-        <div class="results-section">
-            <h2><i class="fas fa-recycle"></i> Recycling & Reuse Suggestions</h2>
+        <section class="chat-container">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M21.82,15.42L19.32,19.75C18.83,20.61 17.92,21.06 17,21H15V23L12.5,18.5L15,14V16H17.82L15.6,12.15L19.93,9.65L21.73,12.77C22.25,13.54 22.32,14.57 21.82,15.42M9.21,3.06H14.21C15.19,3.06 16.04,3.63 16.45,4.45L17.45,6.19L19.18,5.19L16.54,9.6L11.39,9.69L13.12,8.69L11.71,6.24L9.5,10.09L5.16,7.59L6.96,4.47C7.37,3.64 8.22,3.06 9.21,3.06M5.05,19.76L2.55,15.43C2.06,14.58 2.13,13.56 2.64,12.79L3.64,11.06L1.91,10.06L7.05,10.14L9.7,14.56L7.97,13.56L6.56,16H11V21H7.4C6.47,21.07 5.55,20.61 5.05,19.76Z" />
+                </svg>
+                Recycling & Reuse Suggestions
+            </h2>
             <div class="recycling-info">
                 {% for line in recycling_info.split("\n") %}
                     <p>{{ line }}</p>
                 {% endfor %}
             </div>
-        </div>
+            <h3>Ask More About Recycling</h3>
+            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type your question here...">
+                <button class="send-btn" onclick="sendMessage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+                    </svg>
+                    Ask
+                </button>
+            </div>
+        </section>
 
-        <a href="/" class="back-button">
-            <i class="fas fa-arrow-left"></i> Try Another Image
-        </a>
+        <div class="footer">
+            <a href="/" class="back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M19,8L15,12H18A6,6 0 0,1 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20A8,8 0 0,0 20,12H23L19,8M6,12A6,6 0 0,1 12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4A8,8 0 0,0 4,12H1L5,16L9,12H6Z" />
+                </svg>
+                Try Another Image
+            </a>
+        </div>
     </div>
+
+    <script>
+        const recyclingInfo = `{{ recycling_info | tojson }}`
+            .replace(/\\n/g, "\n")
+            .replace(/\\u201c|\\u201d/g, '"')
+            .replace(/\\u2018|\\u2019/g, "'");
+
+        function sendMessage() {
+            var input = document.getElementById("chat-input").value.trim();
+            if (!input) return;
+            var chatBox = document.getElementById("chat-box");
+
+            chatBox.innerHTML += "<p><strong>You:</strong> " + input + "</p>";
+            document.getElementById("chat-input").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            fetch("/ask", {
+                method: "POST",
+                body: JSON.stringify({ question: input, context: recyclingInfo }),
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayAIResponse(data.answer, chatBox);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function displayAIResponse(text, chatBox) {
+            // Clean up the response
+            let formattedText = text
+                .replace(/AI: /, '') // Remove AI prefix if present
+                .replace(/\*\*/g, '') // Remove bold markers
+                .replace(/\*/g, '') // Remove emphasis markers
+                .replace(/\n/g, '<br>'); // Convert newlines to HTML breaks
+            
+            // Convert numbered lists to proper HTML lists
+            if (formattedText.match(/\d+\./g)) {
+                formattedText = formattedText.replace(/(\d+\.\s+[^<]+(<br>)?)+/g, function(match) {
+                    let items = match.split('<br>');
+                    let listHtml = '<ol>';
+                    for (let item of items) {
+                        item = item.trim();
+                        if (item) {
+                            listHtml += '<li>' + item.replace(/^\d+\.\s*/, '') + '</li>';
+                        }
+                    }
+                    listHtml += '</ol>';
+                    return listHtml;
+                });
+            }
+            
+            let responseElement = document.createElement("div");
+            responseElement.innerHTML = "<strong>AI:</strong> " + formattedText;
+            chatBox.appendChild(responseElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Add event listener for Enter key in chat input
+        document.getElementById("chat-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Add some sample waste classes if none are provided (for preview purposes)
+        document.addEventListener("DOMContentLoaded", function() {
+            const wasteClasses = document.querySelector('.waste-classes');
+            if (wasteClasses.innerHTML.trim() === '') {
+                const sampleClasses = ['Plastic', 'Paper', 'Metal', 'Glass', 'Organic'];
+                sampleClasses.forEach(cls => {
+                    const div = document.createElement('div');
+                    div.className = 'waste-class';
+                    div.textContent = cls;
+                    wasteClasses.appendChild(div);
+                });
+            }
+            
+            // Add sample recycling info if none is provided
+            const recyclingInfo = document.querySelector('.recycling-info');
+            if (recyclingInfo.innerHTML.trim() === '') {
+                const sampleInfo = [
+                    "This item appears to be recyclable. Here are some suggestions:",
+                    "• Clean the item before recycling to remove any food residue",
+                    "• Check with your local recycling center for specific guidelines",
+                    "• Consider reusing this item before recycling if possible",
+                    "• Separate different materials if the item is composed of multiple types"
+                ];
+                
+                sampleInfo.forEach(line => {
+                    const p = document.createElement('p');
+                    p.textContent = line;
+                    recyclingInfo.appendChild(p);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
