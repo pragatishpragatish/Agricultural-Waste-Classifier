@@ -3,212 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detection Result</title>
+    <title>Classification Results - EcoSmart Waste Classifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: "Poppins", sans-serif;
-            background-color: #e0e7ff; /* Light pastel blue */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding-top: 40px;
-            margin: 0;
-        }
-        .container {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 600px;
-            border: 4px solid #5e60ce; /* Dark pastel purple */
-        }
-        h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
-        .image-container img {
-            width: 100%;
-            border-radius: 12px;
-            border: 3px solid #5e60ce;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        .recycling-info {
-            background: #f0f4c3; /* Light pastel green */
-            padding: 15px;
-            border-radius: 12px;
-            text-align: left;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-        .chat-container {
-            margin-top: 25px;
-            padding: 15px;
-            background: #ffeaa7; /* Soft pastel yellow */
-            border-radius: 12px;
-            text-align: left;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .chat-container h3 {
-            text-align: center;
-            font-size: 18px;
-            color: #2d3436;
-        }
-        .chat-box {
-            width: auto;
-            min-height: 150px;
-            max-height: 250px;
-            overflow-y: auto;
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid #5e60ce;
-            font-size: 14px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-        /* Modern Scrollbar */
-        .chat-box::-webkit-scrollbar {
-            width: 8px;
-        }
-        .chat-box::-webkit-scrollbar-track {
-            background: #e0e7ff;
-            border-radius: 10px;
-        }
-        .chat-box::-webkit-scrollbar-thumb {
-            background: #5e60ce;
-            border-radius: 10px;
-        }
-        .chat-input-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            padding: 0 0px;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #5e60ce;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-right: 10px;
-        }
-        .send-btn {
-            padding: 10px 15px;
-            border-radius: 10px;
-            background-color: #4a47a3;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s ease-in-out;
-        }
-        .send-btn:hover {
-            background-color: #2d2b8e;
-        }
-        .no-bullets {
-            list-style-type: none; /* Removes the bullets */
-            padding-left: 0; /* Removes the default indentation */
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --accent: #FFC107;
+            --background: #f5f5f5;
+            --text: #333;
         }
 
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            border-radius: 10px;
-            background-color: #4a47a3;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s ease-in-out;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        a:hover {
-            background-color: #2d2b8e;
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--text);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-container {
+            position: relative;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .results-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .results-section h2 {
+            color: var(--text);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results-section h2 i {
+            color: var(--primary);
+        }
+
+        .detected-classes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .class-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .recycling-info {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .recycling-info p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .recycling-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h2>Uploaded Image:</h2>
+        <div class="header">
+            <h1>Classification Results</h1>
+        </div>
+
         <div class="image-container">
             <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
         </div>
 
-        <h2>Detected Waste Classes:</h2>
-        <ul class="no-bullets">
-            {% for cls in classes %}
-                <li>{{ cls }}</li>
-            {% endfor %}
-        </ul>
-
-        <h2>Recycling & Reuse Suggestions:</h2>
-        <div class="recycling-info">
-            {% for line in recycling_info.split("\n") %}
-                <p>{{ line }}</p>
-            {% endfor %}
-        </div>
-
-        <div class="chat-container">
-            <h3>Ask More About Recycling:</h3>
-            <div class="chat-box" id="chat-box"></div>
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Type your question here...">
-                <button class="send-btn" onclick="sendMessage()">Ask</button>
+        <div class="results-section">
+            <h2><i class="fas fa-tags"></i> Detected Waste Types</h2>
+            <div class="detected-classes">
+                {% for cls in classes %}
+                    <span class="class-tag">{{ cls }}</span>
+                {% endfor %}
             </div>
         </div>
 
-        <a href="/">🔄 Try Another Image</a>
+        <div class="results-section">
+            <h2><i class="fas fa-recycle"></i> Recycling & Reuse Suggestions</h2>
+            <div class="recycling-info">
+                {% for line in recycling_info.split("\n") %}
+                    <p>{{ line }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="/" class="back-button">
+            <i class="fas fa-arrow-left"></i> Try Another Image
+        </a>
     </div>
-
-    <script>
-        const recyclingInfo = `{{ recycling_info | tojson }}`
-            .replace(/\\n/g, "\n")
-            .replace(/\\u201c|\\u201d/g, '"')
-            .replace(/\\u2018|\\u2019/g, "'");
-
-        function sendMessage() {
-            var input = document.getElementById("chat-input").value.trim();
-            if (!input) return;
-            var chatBox = document.getElementById("chat-box");
-
-            chatBox.innerHTML += "<p><strong>You:</strong> " + input + "</p>";
-            document.getElementById("chat-input").value = "";
-
-            fetch("/ask", {
-                method: "POST",
-                body: JSON.stringify({ question: input, context: recyclingInfo }),
-                headers: { "Content-Type": "application/json" }
-            })
-            .then(response => response.json())
-            .then(data => {
-                typeWriterEffect("AI: " + data.answer, chatBox);
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        function typeWriterEffect(text, chatBox) {
-            let index = 0;
-            let responseElement = document.createElement("p");
-            chatBox.appendChild(responseElement);
-
-            function type() {
-                if (index < text.length) {
-                    responseElement.innerHTML += text.charAt(index);
-                    index++;
-                    setTimeout(type, 20);
-                } else {
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
-            }
-            type();
-        }
-    </script>
 </body>
 </html>

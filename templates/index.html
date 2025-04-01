@@ -3,81 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waste Detection & Recycling</title>
+    <title>EcoSmart Waste Classifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --accent: #FFC107;
+            --background: #f5f5f5;
+            --text: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: "Poppins", sans-serif;
-            background-color: #e3f2fd; /* Light blue pastel */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 380px;
-            border: 4px solid #6c5ce7; /* Darker pastel purple */
-        }
-        h2 {
-            color: #2d3436; /* Dark grey */
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
-        .file-upload {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            padding: 2rem;
         }
-        input[type="file"] {
-            display: none; /* Hide default file input */
-        }
-        .custom-file-upload {
-            padding: 12px 20px;
-            border: 2px solid #74b9ff;
-            border-radius: 10px;
-            background-color: #dfe6e9;
-            color: #2d3436;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: 0.3s ease-in-out;
+
+        .header {
             text-align: center;
-            display: inline-block;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease;
         }
-        .custom-file-upload:hover {
-            background-color: #b2bec3;
+
+        .header h1 {
+            color: var(--text);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
-        button {
-            padding: 12px 20px;
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .upload-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--primary);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .drop-zone i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
             border: none;
             border-radius: 10px;
-            background-color: #0984e3; /* Darker pastel blue */
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: 0.3s ease-in-out;
+            transition: all 0.3s ease;
             width: 100%;
+            margin-top: 1rem;
         }
-        button:hover {
-            background-color: #0652dd;
+
+        .upload-btn:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .upload-container {
+                padding: 1rem;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Upload an Image for Waste Classification</h2>
-        <form action="/" method="post" enctype="multipart/form-data" class="file-upload">
-            <label for="file-upload" class="custom-file-upload">Choose a File</label>
-            <input id="file-upload" type="file" name="image" required>
-            <button type="submit">Upload</button>
+    <div class="header">
+        <h1>EcoSmart Waste Classifier</h1>
+        <p>Upload an image to identify agricultural waste and get recycling suggestions</p>
+    </div>
+
+    <div class="upload-container">
+        <form action="/" method="post" enctype="multipart/form-data" id="upload-form">
+            <div class="drop-zone" id="drop-zone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag & drop your image here or click to browse</p>
+                <input type="file" name="image" id="file-input" class="file-input" accept="image/*" required>
+            </div>
+            <button type="submit" class="upload-btn">
+                <i class="fas fa-upload"></i> Upload Image
+            </button>
         </form>
     </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <i class="fas fa-leaf"></i>
+            <h3>Smart Detection</h3>
+            <p>Advanced AI-powered waste classification</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-recycle"></i>
+            <h3>Recycling Tips</h3>
+            <p>Get personalized recycling suggestions</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-globe"></i>
+            <h3>Eco-Friendly</h3>
+            <p>Help make the world greener</p>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const uploadForm = document.getElementById('upload-form');
+
+        // Handle drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                uploadForm.submit();
+            }
+        });
+
+        // Handle click to upload
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                uploadForm.submit();
+            }
+        });
+    </script>
 </body>
 </html>
